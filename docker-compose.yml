@@ -17,9 +17,25 @@ services:
     ports:
       - 5432:5432
 
-  app:
-    image: app
-    build: src
-    command: ["./main.py"]
+  ingestion:
+    image: orchidesr/ingestion:v1.0.0
+    restart: always
+    ports: 
+      - 8080:8080
     volumes:
-      - ./data:/data
+      -  /usr/src/app/node_modules
+      - ./ingestion:/usr/src/app
+    depends_on:
+      - database
+
+  transformer:
+    image: orchidesr/transformer:v1.0.0
+    restart: always
+    ports: 
+      - 5000:5000
+    volumes:
+      -  /usr/src/app/node_modules
+      - ./transformer:/usr/src/app
+    depends_on: 
+     - ingestion
+
