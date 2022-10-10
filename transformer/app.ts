@@ -45,7 +45,7 @@ async function writeToDisk(data: any[]) {
   data.forEach((item) => {
     fs.appendFile(
       path.join(__dirname, `./data/${moment()}.json`),
-      JSON.stringify(item),
+      `${JSON.stringify(item)}\n`,
       function (err) {
         if (err) throw err
         console.log("File is created successfully.")
