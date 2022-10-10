@@ -3,23 +3,16 @@ version: "3.7"
 services:
   database:
     image: postgres
-    volumes:
-      - ./example_schema.sql:/docker-entrypoint-initdb.d/example_schema.sql
     environment:
       - POSTGRES_DB=codetest
       - POSTGRES_USER=codetest
       - POSTGRES_PASSWORD=password
-    healthcheck:
-      test: pg_isready -U codetest
-      interval: 5s
-      timeout: 1s
-      retries: 3
     ports:
       - 5432:5432
 
   ingestion:
     image: orchidesr/ingestion:v1.0.0
-    restart: always
+    restart: on-failure
     ports: 
       - 8080:8080
     volumes:
@@ -30,12 +23,11 @@ services:
 
   transformer:
     image: orchidesr/transformer:v1.0.0
-    restart: always
+    restart: on-failure
     ports: 
       - 5000:5000
     volumes:
       -  /usr/src/app/node_modules
       - ./transformer:/usr/src/app
-    depends_on: 
-     - ingestion
+      - ./data:/usr/src/app/
 

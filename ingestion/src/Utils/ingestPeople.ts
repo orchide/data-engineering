@@ -11,7 +11,7 @@ import path from "path"
 import { parse } from "csv-parse/sync"
 import { Place } from "../Models/Places"
 
-const people = fs.readFileSync(path.join(__dirname, "../../../data/people.csv"))
+const people = fs.readFileSync(path.join(__dirname, "../../data/people.csv"))
 
 const data = parse(people, {
   columns: true,

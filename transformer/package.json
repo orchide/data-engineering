@@ -9,6 +9,11 @@
     "dev": "tsc -w & nodemon app.ts ",
     "start": "tsc & node app.ts"
   },
+  "nodemonConfig": {
+    "ignore": [
+      "*.json"
+    ]
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

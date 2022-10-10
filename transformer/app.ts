@@ -32,18 +32,20 @@ async function transform() {
     raw: true,
   })
 
+  console.log(results)
+
   await writeToDisk(results)
 }
 
 async function writeToDisk(data: any[]) {
-  if (!fs.existsSync(path.join(__dirname, "../data"))) {
-    await fsPromises.mkdir(path.join(__dirname, "../data"))
+  if (!fs.existsSync(path.join(__dirname, "./data"))) {
+    await fsPromises.mkdir(path.join(__dirname, "./data"))
   }
 
   data.forEach((item) => {
     fs.appendFile(
-      path.join(__dirname, `../data/${moment()}.json`),
-      item.toString(),
+      path.join(__dirname, `./data/${moment()}.json`),
+      JSON.stringify(item),
       function (err) {
         if (err) throw err
         console.log("File is created successfully.")

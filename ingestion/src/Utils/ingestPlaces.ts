@@ -10,7 +10,7 @@ import path from "path"
 import { parse } from "csv-parse/sync"
 import { Place } from "../Models/Places"
 
-const places = fs.readFileSync(path.join(__dirname, "../../../data/places.csv"))
+const places = fs.readFileSync(path.join(__dirname, "../../data/places.csv"))
 
 const data = parse(places, {
   columns: true,
