@@ -17,7 +17,7 @@ const server = http.createServer(app)
 async function transform() {
   const results = await Place.findAll({
     attributes: [
-      "country",
+      "city",
       [sequelize.fn("COUNT", sequelize.col("*")), "population"],
     ],
 
@@ -28,7 +28,7 @@ async function transform() {
       },
     ],
 
-    group: ["country"],
+    group: ["city"],
     raw: true,
   })
 
@@ -42,16 +42,19 @@ async function writeToDisk(data: any[]) {
     await fsPromises.mkdir(path.join(__dirname, "./data"))
   }
 
-  data.forEach((item) => {
-    fs.appendFile(
-      path.join(__dirname, `./data/${moment()}.json`),
-      `${JSON.stringify(item)}\n`,
-      function (err) {
-        if (err) throw err
-        console.log("File is created successfully.")
-      }
-    )
+  let output: any = {}
+  data.forEach((item: any) => {
+    output[item.city] = item.population
   })
+
+  fs.appendFile(
+    path.join(__dirname, `./data/${moment()}.json`),
+    `${JSON.stringify(output)}\n`,
+    function (err) {
+      if (err) throw err
+      console.log("File is created successfully.")
+    }
+  )
 }
 
 const port = 5000
